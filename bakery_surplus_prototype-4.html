@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pantry — Bakery Surplus</title>
+<meta name="theme-color" content="#8b452b">
+<style>
+:root{--ink:#2b211c;--muted:#78665c;--cream:#fff9f1;--card:#fff;--brown:#8b452b;--orange:#f3a34b;--green:#50745b;--line:#eee2d5}
+*{box-sizing:border-box}body{margin:0;background:var(--cream);color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+header{background:linear-gradient(135deg,#8b452b,#bc6d43);color:#fff;padding:24px 18px 28px;border-radius:0 0 26px 26px}
+.top{max-width:900px;margin:auto;display:flex;justify-content:space-between;align-items:center}.logo{font-weight:900;letter-spacing:.5px;font-size:23px}.pill{border:1px solid #ffffff70;border-radius:99px;padding:7px 12px;font-size:12px}
+header h1{font-size:27px;margin:23px 0 6px;line-height:1.15}header p{margin:0;opacity:.9}
+main{max-width:900px;margin:0 auto;padding:16px 16px 90px}.nav{display:flex;gap:8px;overflow:auto;padding:5px 0 14px;position:sticky;top:0;background:var(--cream);z-index:5}
+.nav button{border:1px solid var(--line);background:white;color:var(--ink);padding:10px 14px;border-radius:99px;white-space:nowrap;font-weight:700}.nav button.active{background:var(--brown);color:white;border-color:var(--brown)}
+.section{display:none}.section.active{display:block}.section-title{display:flex;justify-content:space-between;align-items:end;margin:10px 0 14px}.section-title h2{margin:0;font-size:21px}.section-title p{margin:3px 0;color:var(--muted);font-size:13px}
+.hero-card{background:#f7e7d5;border-radius:20px;padding:18px;margin:10px 0 22px}.hero-card h2{margin:0 0 5px}.hero-card p{margin:0;color:#6d4b39}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.product{background:white;border:1px solid var(--line);border-radius:18px;overflow:hidden;cursor:pointer;transition:transform .15s}.product:hover{transform:translateY(-2px)}.photo{height:125px;background:linear-gradient(135deg,#f5d5ae,#fff0d9);display:flex;align-items:center;justify-content:center;font-size:56px}.product-info{padding:12px}.product-info h3{margin:0 0 4px;font-size:16px}.product-info p{margin:0 0 8px;color:var(--muted);font-size:12px}.price{font-weight:850}.old{text-decoration:line-through;color:#99877c;font-size:12px;margin-right:5px}.tag{display:inline-block;background:#e4f0e6;color:#355b41;padding:4px 7px;border-radius:7px;font-size:10px;font-weight:800;margin:0 4px 5px 0}.tag.orange{background:#fff0d7;color:#87511e}.tag.pink{background:#fce2e4;color:#8c3f4a}.tag.blue{background:#e0ebf6;color:#3b5f83}
+.filters{display:flex;gap:7px;overflow:auto;margin-bottom:14px}.filters button{background:white;border:1px solid var(--line);border-radius:10px;padding:8px 11px;white-space:nowrap}.filters button.active{background:#f1d9c2}
+.list-card{background:white;border:1px solid var(--line);padding:15px;border-radius:17px;margin-bottom:12px}.list-card h3{margin:0 0 7px}.list-card p{color:var(--muted);margin:5px 0}.btn{border:0;border-radius:11px;background:var(--brown);color:white;padding:11px 14px;font-weight:800;cursor:pointer}.btn.secondary{background:#f1e4d7;color:var(--brown)}.full{width:100%}
+.modal-back{position:fixed;inset:0;background:#0007;display:none;align-items:end;justify-content:center;z-index:20}.modal-back.show{display:flex}.modal{background:white;border-radius:24px 24px 0 0;max-width:560px;width:100%;max-height:90vh;overflow:auto;padding:22px}.modal .photo{height:180px;border-radius:15px;margin-bottom:12px}.close{float:right;border:0;background:#eee;border-radius:50%;padding:8px 12px;cursor:pointer}
+label{display:block;font-weight:700;margin:12px 0 5px}input,textarea,select{width:100%;padding:12px;border:1px solid #ddcdbd;border-radius:10px;font:inherit}textarea{min-height:100px}
+footer{text-align:center;color:var(--muted);font-size:12px;margin-top:25px}
+@media(min-width:650px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}.photo{height:150px}.modal-back{align-items:center}.modal{border-radius:24px}}
+</style>
+</head>
+<body>
+<header><div class="top"><div class="logo">🥐 PANTRY</div><div class="pill">Freshness & value</div></div><h1>Freshly baked.<br>Made with care.</h1><p>Discover our bakery favorites, daily deals, and bundles.</p></header>
+<main>
+<div class="nav" id="nav">
+<button class="active" data-tab="home">Home</button><button data-tab="menu">Menu</button><button data-tab="deals">Surplus Deals</button><button data-tab="bundles">Bundles</button><button data-tab="guide">Storage Guide</button><button data-tab="feedback">Feedback</button><button data-tab="about">About</button>
+</div>
+<section class="section active" id="home"><div class="hero-card"><h2>Fresh finds & savings ✨</h2><p>Browse our bakery selection and discover marked-down items while supplies last.</p></div>
+<div class="section-title"><div><h2>Today's picks</h2><p>Sample menu for prototype testing</p></div></div><div class="grid" id="homegrid"></div></section>
+<section class="section" id="menu"><div class="section-title"><div><h2>Our menu</h2><p>Tap a product to view its details</p></div></div><div class="filters" id="filters"></div><div class="grid" id="menugrid"></div></section>
+<section class="section" id="deals"><div class="section-title"><div><h2>Surplus deals</h2><p>Sample markdowns for demonstration</p></div></div><div class="hero-card"><h2>Save while they're available!</h2><p>Discounts shown here are example markdowns. Markdown prices are sample estimates, based on small bundle discounts of roughly 10–20%; actual rates and schedules should be validated with bakery owners.</p></div><div class="grid" id="dealgrid"></div></section>
+<section class="section" id="bundles"><div class="section-title"><div><h2>Bundle offers</h2><p>Simple sample bundle combinations</p></div></div><div id="bundlelist"></div></section>
+<section class="section" id="guide"><div class="section-title"><div><h2>Storage guide</h2><p>General storage reminders—not specific expiry guarantees</p></div></div><div class="list-card"><h3>🍞 Plain breads</h3><p>Keep in a clean, dry, airtight container at room temperature. Avoid direct sunlight and moisture.</p></div><div class="list-card"><h3>🥛 Breads with dairy or cream fillings</h3><p>Follow the bakery's handling instructions. Refrigerate when required and avoid leaving perishable fillings at room temperature for extended periods.</p></div><div class="list-card"><h3>🧁 Filled or topped pastries</h3><p>Storage needs depend on the ingredients. Check the product label or ask bakery staff for safe storage instructions.</p></div><div class="list-card"><h3>💡 Reminder</h3><p>Always check product freshness, ingredients, and bakery-provided storage instructions before consuming.</p></div></section>
+<section class="section" id="feedback"><div class="section-title"><div><h2>Prototype feedback</h2><p>Tell us about your bakery experience</p></div></div><div class="list-card"><form id="feedbackform"><label for="ease">How was your experience at our bakery?</label><select id="ease" required><option value="">Choose one</option><option>Very easy</option><option>Easy</option><option>Neutral</option><option>Difficult</option><option>Very difficult</option></select><label for="clarity">Were our prices and promotions clear?</label><select id="clarity" required><option value="">Choose one</option><option>Very clear</option><option>Clear</option><option>Neutral</option><option>Unclear</option><option>Very unclear</option></select><label for="useful">How satisfied are you with our products and service?</label><select id="useful" required><option value="">Choose one</option><option>Very useful</option><option>Useful</option><option>Neutral</option><option>Not useful</option><option>Not useful at all</option></select><label for="suggestion">Your feedback about our bakery</label><textarea id="suggestion" placeholder="Tell us what you liked or what we can improve..."></textarea><button class="btn full" type="submit">Submit bakery feedback</button></form><p id="feedbackmsg"></p><p style="font-size:12px">Your feedback is saved on this device for this demonstration.</p></div></section>
+<section class="section" id="about"><div class="section-title"><div><h2>About this project</h2></div></div><div class="list-card"><h3>Welcome to Pantry Bakery</h3><p>Welcome to Pantry! We offer freshly baked breads and pastries, along with special deals to help you enjoy your favorites at affordable prices. We value our customers and welcome your suggestions as we work to serve you better.</p><p>We aim to make your bakery experience enjoyable, convenient, and budget-friendly. Ask our staff about product availability and daily offers.</p></div></section>
+<footer>Pantry Bakery • Freshly baked favorites and daily deals</footer>
+</main>
+<div class="modal-back" id="modal"><div class="modal" id="modalcontent"></div></div>
+<script>
+const products=[
+{id:1,name:"Pandesal",category:"Bread",price:3,emoji:"🥖",desc:"Soft, classic Filipino bread rolls.",labels:["Freshly Baked"]},
+{id:2,name:"Spanish Bread",category:"Bread",price:6,emoji:"🥐",desc:"Sweet bread with a soft buttery filling.",labels:["Must Try"]},
+{id:3,name:"Pan de Coco",category:"Bread",price:6,emoji:"🥯",desc:"Soft bread filled with sweet coconut.",labels:["Freshly Baked"]},
+{id:4,name:"Cheese Roll",category:"Bread",price:8,emoji:"🧀",desc:"Soft bread roll with a cheesy filling.",labels:["Must Try"]},
+{id:5,name:"Ensaymada",category:"Pastry",price:12,emoji:"🧁",desc:"Soft, buttery pastry topped with cheese.",labels:["Must Try"]},
+{id:6,name:"Chocolate Muffin",category:"Pastry",price:15,emoji:"🍫",desc:"Moist muffin with chocolate flavor.",labels:["New Flavor"]},
+{id:7,name:"Crinkles",category:"Pastry",price:5,emoji:"🍪",desc:"Soft chocolate cookie with a powdered sugar coating.",labels:["Freshly Baked"]},
+{id:8,name:"Kababayan",category:"Bread",price:5,emoji:"🍞",desc:"Golden Filipino muffin-shaped bread.",labels:["Freshly Baked"]},
+{id:9,name:"Monay",category:"Bread",price:5,emoji:"🍞",desc:"A classic firm Filipino bread roll.",labels:["Freshly Baked"]},
+{id:10,name:"Garlic Bread",category:"Bread",price:8,emoji:"🥖",desc:"Savory bread with garlic flavor.",labels:["New Flavor"]}
+];
+const surplusProducts=[
+{id:101,name:"Pandesal Surplus Pack (10 pcs)",category:"Surplus",price:27,original:30,discount:10,emoji:"🥖",desc:"10 pandesal for a reduced price when offered as a surplus deal.",labels:["Buy Now"]},
+{id:102,name:"Spanish Bread Surplus Pack (5 pcs)",category:"Surplus",price:27,original:30,discount:10,emoji:"🥐",desc:"5 Spanish breads, marked down from the regular pack price.",labels:["Buy Now"]},
+{id:103,name:"Pan de Coco Surplus Pack (5 pcs)",category:"Surplus",price:27,original:30,discount:10,emoji:"🥯",desc:"5 pan de coco offered at a sample markdown.",labels:["Buy Now"]},
+{id:104,name:"Cheese Roll Surplus Pack (5 pcs)",category:"Surplus",price:34,original:40,discount:15,emoji:"🧀",desc:"5 cheese rolls offered at a sample markdown.",labels:["Buy Now"]},
+{id:105,name:"Ensaymada Surplus Pack (3 pcs)",category:"Surplus",price:30,original:36,discount:17,emoji:"🧁",desc:"3 ensaymada with a rounded sample markdown price.",labels:["Buy Now"]},
+{id:106,name:"Chocolate Muffin Surplus Pack (3 pcs)",category:"Surplus",price:36,original:45,discount:20,emoji:"🍫",desc:"3 chocolate muffins with a sample markdown.",labels:["Buy Now"]},
+{id:107,name:"Crinkles Surplus Pack (6 pcs)",category:"Surplus",price:27,original:30,discount:10,emoji:"🍪",desc:"6 crinkles offered at a sample markdown.",labels:["Buy Now"]},
+{id:108,name:"Kababayan Surplus Pack (5 pcs)",category:"Surplus",price:22,original:25,discount:12,emoji:"🍞",desc:"5 kababayan breads offered at a sample markdown.",labels:["Buy Now"]}
+];
+const labelClass={"Freshly Baked":"","New Flavor":"blue","Must Try":"pink","Buy Now":"orange"};
+function tags(labels){return labels.map(x=>`<span class="tag ${labelClass[x]||''}">${x}</span>`).join("")}
+function card(p){return `<article class="product" onclick="showProduct(${p.id})"><div class="photo">${p.emoji}</div><div class="product-info">${tags(p.labels)}<h3>${p.name}</h3><p>${p.desc}</p><div class="price">₱${p.price}</div></div></article>`}
+function surplusCard(p){return `<article class="product" onclick="showSurplusProduct(${p.id})"><div class="photo">${p.emoji}</div><div class="product-info">${tags(p.labels)}<span class="tag orange">${p.discount}% OFF</span><h3>${p.name}</h3><p>${p.desc}</p><div><span class="old">₱${p.original}</span><span class="price">₱${p.price}</span></div></div></article>`}
+function fill(){document.getElementById("homegrid").innerHTML=products.slice(0,6).map(p=>card(p)).join("");document.getElementById("menugrid").innerHTML=products.map(p=>card(p)).join("");document.getElementById("dealgrid").innerHTML=surplusProducts.map(p=>surplusCard(p)).join("");document.getElementById("bundlelist").innerHTML=`<div class="list-card"><h3>🥖 3 assorted breads</h3><p>Choose any three eligible bread rolls.</p><div class="price">Sample bundle: ₱25</div><span class="tag orange">Bundle offer</span></div><div class="list-card"><h3>🥐 Bread & pastry mix</h3><p>Two bread rolls and one pastry in a sample combo.</p><div class="price">Sample bundle: ₱35</div><span class="tag orange">Bundle offer</span></div>`}
+function showProduct(id){let p=products.find(x=>x.id===id);document.getElementById("modalcontent").innerHTML=`<button class="close" onclick="closeModal()">✕</button><div class="photo">${p.emoji}</div>${tags(p.labels)}<h2>${p.name}</h2><p>${p.desc}</p><p>Category: ${p.category}</p><p><strong>₱${p.price}</strong> per piece (sample menu price)</p><button class="btn full" onclick="closeModal()">Back to browsing</button>`;document.getElementById("modal").classList.add("show")}
+function showSurplusProduct(id){let p=surplusProducts.find(x=>x.id===id);document.getElementById("modalcontent").innerHTML=`<button class="close" onclick="closeModal()">✕</button><div class="photo">${p.emoji}</div>${tags(p.labels)}<span class="tag orange">${p.discount}% OFF</span><h2>${p.name}</h2><p>${p.desc}</p><p>Category: Surplus Deal</p><p><span class="old">₱${p.original}</span><strong>₱${p.price}</strong> <span class="tag orange">${p.discount}% markdown</span></p><p>Sample surplus price for prototype display only.</p><button class="btn full" onclick="closeModal()">Back to browsing</button>`;document.getElementById("modal").classList.add("show")}
+function closeModal(){document.getElementById("modal").classList.remove("show")}
+document.getElementById("modal").addEventListener("click",e=>{if(e.target.id==="modal")closeModal()});
+document.querySelectorAll("#nav button").forEach(b=>b.addEventListener("click",()=>{document.querySelectorAll("#nav button").forEach(x=>x.classList.remove("active"));b.classList.add("active");document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));document.getElementById(b.dataset.tab).classList.add("active");window.scrollTo({top:0,behavior:"smooth"})}));
+let categories=["All","Bread","Pastry"];document.getElementById("filters").innerHTML=categories.map((c,i)=>`<button class="${i===0?"active":""}" onclick="filterMenu('${c}',this)">${c}</button>`).join("");
+function filterMenu(c,b){document.querySelectorAll("#filters button").forEach(x=>x.classList.remove("active"));b.classList.add("active");document.getElementById("menugrid").innerHTML=products.filter(p=>c==="All"||p.category===c).map(p=>card(p)).join("")}
+document.getElementById("feedbackform").addEventListener("submit",e=>{e.preventDefault();let item={ease:document.getElementById("ease").value,clarity:document.getElementById("clarity").value,useful:document.getElementById("useful").value,suggestion:document.getElementById("suggestion").value,date:new Date().toISOString()};let arr=JSON.parse(localStorage.getItem("bakeryPrototypeFeedback")||"[]");arr.push(item);localStorage.setItem("bakeryPrototypeFeedback",JSON.stringify(arr));document.getElementById("feedbackmsg").textContent="Thank you for sharing your feedback with us!";e.target.reset()});
+fill();
+</script>
+</body>
+</html>
